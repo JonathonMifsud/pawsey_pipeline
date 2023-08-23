@@ -11,6 +11,7 @@
 # if you are providing files include both the left and right file
 
 # Set the default values
+user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
  
@@ -53,10 +54,10 @@ while getopts "p:f:r:" 'OPTKEY'; do
 
     if [ "$file_of_accessions" = "" ]
         then
-            echo "No file containing files to run specified running all files in /scratch/$root_project/$project/trimmed_reads/"
-            ls -d /scratch/"$root_project"/"$project"/trimmed_reads/*_trimmed*.fastq.gz > /scratch/"$root_project"/"$project"/raw_reads/file_of_accessions_for_readcount
-            sed -i --posix '/.*trimmed_R2.fastq.gz/d' /scratch/"$root_project"/"$project"/raw_reads/file_of_accessions_for_readcount
-            export file_of_accessions="/scratch/$root_project/$project/raw_reads/file_of_accessions_for_readcount"
+            echo "No file containing files to run specified running all files in /scratch/director2187/$user/$root_project/$project/trimmed_reads/"
+            ls -d /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/*_trimmed*.fastq.gz > /scratch/director2187/$user/"$root_project"/"$project"/raw_reads/file_of_accessions_for_readcount
+            sed -i --posix '/.*trimmed_R2.fastq.gz/d' /scratch/director2187/$user/"$root_project"/"$project"/raw_reads/file_of_accessions_for_readcount
+            export file_of_accessions="/scratch/director2187/$user/$root_project/$project/raw_reads/file_of_accessions_for_readcount"
         else    
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
@@ -72,9 +73,9 @@ if [ "$jPhrase" == "0-0" ]; then
 fi
 
 sbatch --array $jPhrase \
-    --output "/group/$root_project/$project/logs/readcount_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
-    --error="/group/$root_project/$project/logs/readcount_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
+    --output "/scratch/director2187/$user/$root_project/$project/logs/readcount_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/director2187/$user/$root_project/$project/logs/readcount_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
     --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project" \
     --time "$job_time" \
     --account="$root_project" \
-    /group/"$root_project"/"$project"/scripts/JCOM_pipeline_readcount.pbs
+    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_readcount.pbs

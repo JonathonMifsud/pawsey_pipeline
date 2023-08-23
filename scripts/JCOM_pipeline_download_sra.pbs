@@ -19,7 +19,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=2
 #SBATCH --mem=20G
-#SBATCH --mail-user="jmif9945@uni.sydney.edu.au"
+#SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --mail-type=BEGIN,END,FAIL
 
 
@@ -27,7 +27,7 @@
 module load kingfisher
 module load sratoolkit/2.11.0
 
-inpath="/scratch/$root_project/$project/raw_reads"
+inpath="/scratch/director2187/$user/$root_project/$project/raw_reads"
 cd "$inpath" || exit
 
 # read in list of file names or accessions for example could be several fastq.gz files (paired or single) or just the accession id's

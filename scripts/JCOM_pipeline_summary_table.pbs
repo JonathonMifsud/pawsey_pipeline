@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=120G
-#SBATCH --mail-user="jmif9945@uni.sydney.edu.au"
+#SBATCH --mail-user="$user@uni.sydney.edu.au"
 
 ## Blast output contigs should already be annotated with library ID
 
@@ -283,10 +283,10 @@ function createSummaryTable() {
     # Get lineage for all taxids
     echo "Getting lineage for taxids..."
     current_month=$(date +%b-%Y) # Get the current month
-    taxonkit lineage -c "$wd"/blast_results/summary_table_creation/temp_joint_blast_table_taxids --data-dir /scratch/VELAB/Databases/Blast/taxdmp."$current_month"/ \
+    taxonkit lineage -c "$wd"/blast_results/summary_table_creation/temp_joint_blast_table_taxids --data-dir /scratch/director2187/$user/VELAB/Databases/Blast/taxdmp."$current_month"/ \
         | awk '$2>0' \
         | cut -f 2- \
-        | taxonkit reformat --output-ambiguous-result --data-dir /scratch/VELAB/Databases/Blast/taxdmp."$current_month"/  -I 1 -r "Unassigned" -R "missing_taxid" --fill-miss-rank -f "{k}\t{p}\t{c}\t{o}\t{f}\t{g}\t{s}" \
+        | taxonkit reformat --output-ambiguous-result --data-dir /scratch/director2187/$user/VELAB/Databases/Blast/taxdmp."$current_month"/  -I 1 -r "Unassigned" -R "missing_taxid" --fill-miss-rank -f "{k}\t{p}\t{c}\t{o}\t{f}\t{g}\t{s}" \
         | csvtk add-header -t -n "taxid,lineage,kingdom,phylum,class,order,family,genus,species" >"$wd"/blast_results/summary_table_creation/temp_lineage_table
 
     if [ $? -eq 0 ]; then
@@ -371,7 +371,7 @@ set -e
 
 wd="/project/$root_project/$project"
 scripts="/project/$root_project/$project/scripts/"
-abundance="/scratch/$root_project/$project/abundance/final_abundance"
+abundance="/scratch/director2187/$user/$root_project/$project/abundance/final_abundance"
 taxonomy="/project/VELAB/jcom_pipeline_taxonomy"
 pathtoRscript="/project/$root_project/anaconda3/envs/r_env/lib/R/bin/"
 

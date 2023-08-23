@@ -5,7 +5,7 @@
 #SBATCH --ntasks-per-node=4
 #SBATCH --mem=130G
 #SBATCH --job-name="ccmetagen"
-#SBATCH --mail-user="jmif9945@uni.sydney.edu.au"
+#SBATCH --mail-user="$user@uni.sydney.edu.au"
 
 #SBATCH --time=84:00:00
 
@@ -30,11 +30,11 @@ library_run_without_path="$(basename -- $library_run)"
 library_id=$(echo $library_run_without_path | sed 's/\.fastq.gz//g' | sed 's/_*//g')
 
 # Variables to define working paths and parameters
-wd=/scratch/"$root_project"/"$project"/ccmetagen
-inpath=/scratch/"$root_project"/"$project"/raw_reads
-outpath=/scratch/"$root_project"/"$project"/ccmetagen
+wd=/scratch/director2187/$user/"$root_project"/"$project"/ccmetagen
+inpath=/scratch/director2187/$user/"$root_project"/"$project"/raw_reads
+outpath=/scratch/director2187/$user/"$root_project"/"$project"/ccmetagen
 threads=4
-db=/scratch/VELAB/db_kma/ncbi_nt_no_env_11jun2019
+db=/scratch/director2187/$user/VELAB/db_kma/ncbi_nt_no_env_11jun2019
 
 # Check if directories exist and move to working directory
 if [ -d "$wd" ]; then
@@ -51,7 +51,7 @@ kma -ipe "$inpath"/"$library_id"_1.fastq.gz "$inpath"/"$library_id"_2.fastq.gz \
     -t "$threads" \
     -1t1 \
     -mem_mode \
-    -tmp /scratch/$root_project/ \
+    -tmp /scratch/director2187/$user/$root_project/ \
     -and || { echo "Error: Failed to execute kma."; exit 1; }
 
 # Run CCMetagen

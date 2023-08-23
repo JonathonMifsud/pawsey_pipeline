@@ -17,6 +17,7 @@
 # provide a file containing SRA accessions - make sure it is full path to file -f 
 
 # Set the default values
+user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
 
@@ -77,9 +78,9 @@ if [ "$jPhrase" == "0-0" ]; then
 fi
 
 sbatch --array $jPhrase \
-    --output "/group/$root_project/$project/logs/sra_download_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
-    --error="/group/$root_project/$project/logs/sra_download_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
+    --output "/scratch/director2187/$user/$root_project/$project/logs/sra_download_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/director2187/$user/$root_project/$project/logs/sra_download_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
     --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project" \
     --time "$job_time" \
     --account="$root_project" \
-    /group/"$root_project"/"$project"/scripts/JCOM_pipeline_download_sra.pbs
+    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_download_sra.pbs

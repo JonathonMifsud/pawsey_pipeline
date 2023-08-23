@@ -8,6 +8,7 @@
 wd=$(pwd)
 
 # Set the default values
+user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
 
@@ -67,10 +68,10 @@ while getopts "i:d:p:r:" 'OPTKEY'; do
 
 input_basename=$(basename "$input")
 
-sbatch --output="/group/$root_project/$project/logs/blastp_$input_basename_$(date '+%Y%m%d')_stout.txt" \
-    --error="/group/$root_project/$project/logs/blastp_$input_basename_$(date '+%Y%m%d')_stderr.txt" \
+sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/blastp_$input_basename_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/director2187/$user/$root_project/$project/logs/blastp_$input_basename_$(date '+%Y%m%d')_stderr.txt" \
     --export="input=$input,db=$db,wd=$wd" \
     --account="jcomvirome" \
-     /group/$root_project/$project/scripts/JCOM_pipeline_blastp_custom.pbs
+     /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_blastp_custom.pbs
     
 

@@ -1,5 +1,5 @@
 #! /bin/bash
-#SBATCH --mail-user="jmif9945@uni.sydney.edu.au"
+#SBATCH --mail-user="$user@uni.sydney.edu.au"
 
 #SBATCH --job-name="fasttree"
 #SBATCH --nodes=1

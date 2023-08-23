@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 #SBATCH --job-name="ccmetagen"
-#SBATCH --mail-user="jmif9945@uni.sydney.edu.au"
+#SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=120G
@@ -24,11 +24,11 @@ library_id=$(echo $library_run_without_path | sed 's/\.contigs.fa//g')
 
 
 # variables change these to whatever you like!
-wd=/scratch/"$root_project"/"$project"/ccmetagen
-inpath=/scratch/"$root_project"/"$project"/contigs/final_contigs   # location of reads and filenames
-outpath=/scratch/"$root_project"/"$project"/ccmetagen        # location of megahit output     
+wd=/scratch/director2187/$user/"$root_project"/"$project"/ccmetagen
+inpath=/scratch/director2187/$user/"$root_project"/"$project"/contigs/final_contigs   # location of reads and filenames
+outpath=/scratch/director2187/$user/"$root_project"/"$project"/ccmetagen        # location of megahit output     
 threads=4
-db=/scratch/VELAB/db_kma/ncbi_nt_no_env_11jun2019
+db=/scratch/director2187/$user/VELAB/db_kma/ncbi_nt_no_env_11jun2019
 cd "$wd"
 
 # Map reads to database with kma
@@ -38,7 +38,7 @@ kma -i "$inpath"/"$library_run" \
     -t "$threads" \
     -1t1 \
     -mem_mode \
-    -tmp /scratch/$root_project/ \
+    -tmp /scratch/director2187/$user/$root_project/ \
     -and
 
 # Run CCMetagen

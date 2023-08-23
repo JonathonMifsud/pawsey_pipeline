@@ -3,6 +3,7 @@
 # shell wrapper script to run fastqc for project folder
 
 # Set the default values
+user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
 
@@ -47,10 +48,10 @@ while getopts "p:f:r:" 'OPTKEY'; do
 
     if [ "$file_of_accessions" = "" ]
         then
-            echo "No file containing files to run specified running all files in /scratch/jcomvirome/$project/raw_reads/ and /scratch/jcomvirome/$project/trimmed_files/"
-            ls -d /scratch/jcomvirome/"$project"/raw_reads/*.fastq.gz > /scratch/jcomvirome/"$project"/raw_reads/file_of_accessions
-            ls -d /scratch/jcomvirome/"$project"/trimmed_reads/*.fastq.gz >> /scratch/jcomvirome/"$project"/raw_reads/file_of_accessions
-            export file_of_accessions="/scratch/jcomvirome/$project/raw_reads/file_of_accessions"
+            echo "No file containing files to run specified running all files in /scratch/director2187/$user/jcomvirome/$project/raw_reads/ and /scratch/director2187/$user/jcomvirome/$project/trimmed_files/"
+            ls -d /scratch/director2187/$user/jcomvirome/"$project"/raw_reads/*.fastq.gz > /scratch/director2187/$user/jcomvirome/"$project"/raw_reads/file_of_accessions
+            ls -d /scratch/director2187/$user/jcomvirome/"$project"/trimmed_reads/*.fastq.gz >> /scratch/director2187/$user/jcomvirome/"$project"/raw_reads/file_of_accessions
+            export file_of_accessions="/scratch/director2187/$user/jcomvirome/$project/raw_reads/file_of_accessions"
         else    
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
@@ -67,6 +68,6 @@ fi
 
 sbatch --export="project=$project,file_of_accessions=$file_of_accessions" \
     --array $jPhrase \
-    --output "/group/$root_project/$project/logs/fastqc_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
-    --error="/group/$root_project/$project/logs/fastqc_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
-    /group/jcomvirome/random_scripts/project_scripts/project_fastqc.pbs
+    --output "/scratch/director2187/$user/$root_project/$project/logs/fastqc_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/director2187/$user/$root_project/$project/logs/fastqc_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
+    /scratch/director2187/$user/jcomvirome/random_scripts/project_scripts/project_fastqc.pbs

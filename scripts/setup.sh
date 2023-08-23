@@ -11,11 +11,14 @@ root="jcomvirome"
 project="JCOM_pipeline_virome"
 
 # email address
-email="jmif9945@uni.sydney.edu.au"
+email="$user@uni.sydney.edu.au"
+
+#user
+user=jmif9945
 
 # Define directory paths for convenience
-group_dir="/group/${root}/${project}"
-scratch_dir="/scratch/${root}/${project}"
+group_dir="/scratch/director2187/$user/${root}/${project}"
+scratch_dir="/scratch/director2187/$user/${root}/${project}"
 
 # Create project directories in /project and /scratch
 # The -p option creates parent directories as needed and doesn't throw an error if the directory already exists.
@@ -41,6 +44,7 @@ sed -i "s/JCOM_pipeline_virome/$project/g" *
 sed -i "s/JCOM_pipeline/$project/g" *
 sed -i "s/jcomvirome/$root/g" *
 sed -i "s/jmif9945@uni.sydney.edu.au/$email/g" *
+sed -i "s/jmif9945/$user/g" *
 
 # Notify user about the project and scratch directory paths
 echo "Project setup completed successfully."

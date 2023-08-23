@@ -15,6 +15,7 @@
 # You will need to provide the following arguments:
 
 # Set the default values
+user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
 
@@ -69,9 +70,9 @@ while getopts "p:f:r:d:" 'OPTKEY'; do
     if [ "$file_of_accessions" = "" ]
         then
             # if no file of accessions is provided then run all files in the final_contigs directory
-            echo "No file containing files to run specified running all files in /scratch/$root_project/$project/contigs/final_contigs/"
-            ls -d /scratch/"$root_project"/"$project"/contigs/final_contigs/*.fa > /scratch/"$root_project"/"$project"/contigs/final_contigs/file_of_accessions_for_blastxNR
-            export file_of_accessions="/scratch/$root_project/$project/contigs/final_contigs/file_of_accessions_for_blastxNR"
+            echo "No file containing files to run specified running all files in /scratch/director2187/$user/$root_project/$project/contigs/final_contigs/"
+            ls -d /scratch/director2187/$user/"$root_project"/"$project"/contigs/final_contigs/*.fa > /scratch/director2187/$user/"$root_project"/"$project"/contigs/final_contigs/file_of_accessions_for_blastxNR
+            export file_of_accessions="/scratch/director2187/$user/$root_project/$project/contigs/final_contigs/file_of_accessions_for_blastxNR"
         else    
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
@@ -88,9 +89,9 @@ fi
 
 # Run the blastx jobs
 sbatch --array $jPhrase \
-    --output "/group/$root_project/$project/logs/blastnr_$SLURM_ARRAY_TASK_ID_$project_$queue_$db_$(date '+%Y%m%d')_stout.txt" \
-    --error="/group/$root_project/$project/logs/blastnr_$SLURM_ARRAY_TASK_ID_$project_$queue_$db_$(date '+%Y%m%d')_stderr.txt" \
+    --output "/scratch/director2187/$user/$root_project/$project/logs/blastnr_$SLURM_ARRAY_TASK_ID_$project_$queue_$db_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/director2187/$user/$root_project/$project/logs/blastnr_$SLURM_ARRAY_TASK_ID_$project_$queue_$db_$(date '+%Y%m%d')_stderr.txt" \
     --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project,diamond_para=$diamond_para,db=$db" \
     --time "$job_time" \
     --account="$queue_project" \
-    /group/"$root_project"/"$project"/scripts/JCOM_pipeline_blastnr.pbs
+    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_blastnr.pbs

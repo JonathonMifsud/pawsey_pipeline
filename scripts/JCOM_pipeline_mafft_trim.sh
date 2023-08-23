@@ -7,6 +7,7 @@
 #                                 please ask before sharing these scripts :)                                  #
 ###############################################################################################################
 # Set the default values
+user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
 
@@ -50,9 +51,9 @@ while getopts "i:r:" 'OPTKEY'; do
     exit 1
     fi
     
-sbatch --output="/group/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stout.txt" \
-    --error="/group/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stderr.txt" \
+sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/director2187/$user/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stderr.txt" \
     --export="sequences=$sequences" \
     --time "$job_time" \
     --account="$root_project" \
-   /group/$root_project/$project/scripts/JCOM_pipeline_mafft_trim.pbs
+   /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_mafft_trim.pbs
