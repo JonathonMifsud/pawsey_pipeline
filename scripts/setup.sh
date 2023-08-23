@@ -11,9 +11,9 @@ root="jcomvirome"
 project="JCOM_pipeline_virome"
 
 # email address
-email="$user@uni.sydney.edu.au"
+email="user@uni.sydney.edu.au"
 
-#user
+# user
 user=jmif9945
 
 # Define directory paths for convenience
