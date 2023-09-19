@@ -14,7 +14,7 @@ source $CONDA_BASE/etc/profile.d/conda.sh
 conda activate ccmetagen
 
 # Module load
-module load ccmetagen/1.1.3
+module load ccmetagen
 
 # read in list of file names or accessions for example could be several fastq.gz files (paired or single) or just the accession id's
 readarray -t myarray < "$file_of_accessions"

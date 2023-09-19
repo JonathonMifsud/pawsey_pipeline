@@ -4,7 +4,6 @@
 #                                                JCO Mifsud                                                   # 
 #                                                   2023                                                      # 
 #                                                                                                             #
-#                                 please ask before sharing these scripts :)                                  #
 ###############################################################################################################
 
 # Underlying pbs script that is run using the wrapper script YOURPROJECT_download_sra.sh
@@ -22,10 +21,8 @@
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --mail-type=BEGIN,END,FAIL
 
-
-
 module load kingfisher
-module load sratoolkit/2.11.0
+module load sratoolkit
 
 inpath="/scratch/director2187/$user/$root_project/$project/raw_reads"
 cd "$inpath" || exit

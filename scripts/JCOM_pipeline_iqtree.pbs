@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=6
 #SBATCH --mem=40G
 # Module load
-module load iqtree/2.1.7-beta
+module load iqtree
 
 wd="$(dirname "${alignment}")"             # working dir 
 filename="$(basename -- "$alignment")" # filename to be used in outfile

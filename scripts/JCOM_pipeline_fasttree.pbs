@@ -7,7 +7,7 @@
 #SBATCH --mem=20G
 
 # Module load
-module load fasttree/2.1.9
+module load fasttree
 
 
 wd="$(dirname "${alignment}")"             # working dir 
