@@ -56,7 +56,7 @@ while getopts "p:f:r:" 'OPTKEY'; do
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
 
-#lets work out how many jobs we need from the length of input and format the J phrase for the pbs script
+#lets work out how many jobs we need from the length of input and format the J phrase for the.slurm script
 jMax=$(wc -l < $file_of_accessions)
 jIndex=$(expr $jMax - 1)
 jPhrase="0-""$jIndex"
@@ -70,4 +70,4 @@ sbatch --export="project=$project,file_of_accessions=$file_of_accessions" \
     --array $jPhrase \
     --output "/scratch/director2187/$user/$root_project/$project/logs/fastqc_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/director2187/$user/$root_project/$project/logs/fastqc_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
-    /scratch/director2187/$user/jcomvirome/random_scripts/project_scripts/project_fastqc.pbs
+    /scratch/director2187/$user/jcomvirome/random_scripts/project_scripts/project_fastqc.slurm

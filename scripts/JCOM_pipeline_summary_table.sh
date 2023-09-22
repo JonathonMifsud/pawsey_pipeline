@@ -62,4 +62,4 @@ sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/summary
     --export="project=$project,root_project=$root_project,file_of_accessions=$file_of_accessions" \
     --time "$job_time" \
     --account="$root_project" \
-    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_summary_table.pbs
+    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_summary_table.slurm

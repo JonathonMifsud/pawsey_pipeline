@@ -68,4 +68,4 @@ sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/iqtree_
     --export="alignment=$alignment,model=$model" \
     --time "$job_time" \
     --account="$root_project" \
-    /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_iqtree.pbs
+    /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_iqtree.slurm

@@ -6,7 +6,7 @@
 #                                                                                                             #
 ###############################################################################################################
 
-# Underlying pbs script that is run using the wrapper script YOURPROJECT_download_sra.sh
+# Underlying.slurm script that is run using the wrapper script YOURPROJECT_download_sra.sh
 # given a file of SRA accessions (runs), this script will download the SRA files
 # it will cycle through several download methods until it finds one that works
 # it will check to see if the library is paired or single and if it has downloaded correctly

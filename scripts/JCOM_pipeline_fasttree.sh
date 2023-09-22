@@ -64,4 +64,4 @@ sbatch --output="/scratch/director2187/$user/"$root_project"/"$project"/logs/fas
     --export="alignment=$alignment" \
     --time "$job_time" \
     --account="$root_project" \
-    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_fasttree.pbs
+    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_fasttree.slurm

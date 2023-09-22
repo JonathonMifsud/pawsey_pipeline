@@ -75,12 +75,12 @@ while getopts "p:f:r:d:" 'OPTKEY'; do
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
 
-queue_project="$root_project" # what account to use in the pbs script this might be differnt from the root dir
+queue_project="$root_project" # what account to use in the.slurm script this might be differnt from the root dir
 blast_cpu="24"
 blast_para="-max_target_seqs 10 -num_threads $cpu -mt_mode 1 -evalue 1E-10 -subject_besthit -outfmt '6 qseqid qlen sacc salltitles staxids pident length evalue'"
 
 
-#lets work out how many jobs we need from the length of input and format the J phrase for the pbs script
+#lets work out how many jobs we need from the length of input and format the J phrase for the.slurm script
 jMax=$(wc -l < $file_of_accessions)
 jIndex=$(expr $jMax - 1)
 jPhrase="0-""$jIndex"
@@ -98,4 +98,4 @@ sbatch --array $jPhrase \
     --time "$cpu" \
     --time "$mem" \
     --account="$root_project" \
-    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_blastnt.pbs
+    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_blastnt.slurm

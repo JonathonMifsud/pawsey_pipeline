@@ -55,4 +55,4 @@ sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/mafft_a
     --export="sequences=$sequences" \
     --time "$job_time" \
     --account="$root_project" \
-   /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_mafft_trim.pbs
+   /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_mafft_trim.slurm

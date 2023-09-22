@@ -61,7 +61,7 @@ if [ -z "$file_of_accessions" ]
 fi
 
 
-# Determine the number of jobs needed from the length of input and format the J phrase for the pbs script
+# Determine the number of jobs needed from the length of input and format the J phrase for the.slurm script
 jMax=$(wc -l < $file_of_accessions)
 jIndex=$(expr $jMax - 1)
 jPhrase="0-""$jIndex"
@@ -77,4 +77,4 @@ sbatch --array $jPhrase \
     --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project" \
     --time "$job_time" \
     --account="$root_project" \
-    /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_ccmetagen_reads.pbs
+    /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_ccmetagen_reads.slurm

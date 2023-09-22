@@ -72,6 +72,6 @@ sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/blastx_
     --export="input=$input,db=$db,wd=$wd" \
     --time "$job_time" \
     --account="jcomvirome" \
-     /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_blastx_custom.pbs
+     /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_blastx_custom.slurm
     
 

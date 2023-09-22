@@ -72,6 +72,6 @@ sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/blastp_
     --error="/scratch/director2187/$user/$root_project/$project/logs/blastp_$input_basename_$(date '+%Y%m%d')_stderr.txt" \
     --export="input=$input,db=$db,wd=$wd" \
     --account="jcomvirome" \
-     /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_blastp_custom.pbs
+     /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_blastp_custom.slurm
     
 
