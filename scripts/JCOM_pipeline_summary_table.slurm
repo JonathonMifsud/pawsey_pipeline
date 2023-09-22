@@ -6,8 +6,11 @@
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=120G
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
+#SBATCH --partition=work
 
 ## Blast output contigs should already be annotated with library ID
+
+module load singularity/3.11.4
 
 function condaSetUp(){
     CONDA_BASE=$(conda info --base) #figure out the path to conda directory so I can source it

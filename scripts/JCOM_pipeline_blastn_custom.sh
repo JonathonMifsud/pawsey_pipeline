@@ -10,6 +10,7 @@ wd=$(pwd)
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
+singularity_image="/scratch/director2187/jmif9945/modules/blast:2.14.1.sif"
 
 while getopts "i:d:p:r:" 'OPTKEY'; do
     case "$OPTKEY" in

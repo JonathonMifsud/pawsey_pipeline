@@ -8,8 +8,10 @@
 #SBATCH --mem=20G
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --partition=work
 
-module load fastqc
+module load singularity/3.11.4
+
 cd /scratch/director2187/$user/jcomvirome/"$project"/fastqc
 
 readarray -t myarray < "$file_of_accessions"

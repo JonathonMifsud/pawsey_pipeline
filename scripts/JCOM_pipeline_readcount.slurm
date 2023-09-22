@@ -13,6 +13,7 @@
 #SBATCH --mem=20G
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --partition=work
 
 # Change directory to the project's read_count directory. If the directory does not exist, exit the script.
 cd /scratch/director2187/$user/"$root_project"/"$project"/read_count || { echo "Directory not found"; exit 1; }

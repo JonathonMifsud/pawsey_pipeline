@@ -8,20 +8,9 @@
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
 
 #SBATCH --time=84:00:00
+#SBATCH --partition=work
 
-
-# Load a newer version of kma for tmp dir flag
-CONDA_BASE=$(conda info --base) 
-if [ $? -ne 0 ]; then
-    echo "Error: Unable to locate conda base directory."
-    exit 1
-fi
-
-source $CONDA_BASE/etc/profile.d/conda.sh
-conda activate ccmetagen || { echo "Error: Failed to activate conda environment."; exit 1; }
-
-# Load ccmetagen module
-module load ccmetagen/1.1.3 || { echo "Error: Failed to load ccmetagen module."; exit 1; }
+module load singularity/3.11.4
 
 # Read in list of file names or accessions
 readarray -t myarray < "$file_of_accessions"

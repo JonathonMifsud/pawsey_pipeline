@@ -6,7 +6,7 @@
 #                                                                                                             #
 ###############################################################################################################
 
-# Underlying.slurm script that is run using the wrapper script YOURPROJECT_download_sra.sh
+# Underlying pbs script that is run using the wrapper script YOURPROJECT_download_sra.sh
 # given a file of SRA accessions (runs), this script will download the SRA files
 # it will cycle through several download methods until it finds one that works
 # it will check to see if the library is paired or single and if it has downloaded correctly
@@ -20,18 +20,18 @@
 #SBATCH --mem=20G
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --mail-type=BEGIN,END,FAIL
-
-module load kingfisher
-module load sratoolkit
+#SBATCH --partition=work
 
 inpath="/scratch/director2187/$user/$root_project/$project/raw_reads"
 cd "$inpath" || exit
+
+module load singularity/3.11.4
 
 # read in list of file names or accessions for example could be several fastq.gz files (paired or single) or just the accession id's
 readarray -t myarray < "$file_of_accessions"
 export library_id=${myarray["$SLURM_ARRAY_TASK_ID"]}
 
-kingfisher get -r "$library_id" -m ena-ascp ena-ftp prefetch aws-http aws-cp --force --prefetch-max-size 100000000 --output-format-possibilities fastq.gz fastq
+singularity exec "$singularity_image" kingfisher get -r "$library_id" -m ena-ascp ena-ftp prefetch aws-http aws-cp --force --prefetch-max-size 100000000 --output-format-possibilities fastq.gz fastq
 
 # is it single and unzipped? - unzip typically if ascp fails so it uses prefetch
 if [[ ( -f "$inpath"/"$library_id"".sra.fastq" ||  -f "$inpath"/"$library_id"".fastq" ) && ( ! -f "$inpath"/"$library_id"".sra.fastq.gz" || ! -f "$inpath"/"$library_id"".fastq.gz" ) ]]; then #e.g. if SRR1249328.fastq.gz exists and SRR1249328_1.fastq.gz doesn't layout == single
@@ -52,7 +52,7 @@ fi
 if [ -f "$inpath"/"$library_id""_1.fastq.gz" ] && [ ! -f "$inpath"/"$library_id""_2.fastq.gz" ]; then 
     echo "$library_id download is missing _2"
     # in the case that _2 is missing we will redownload with a forced overwrite.
-    kingfisher get -r "$library_id" -m ena-ascp ena-ftp prefetch --force --prefetch-max-size 100000000 --output-format-possibilities fastq.gz fastq
+    singularity exec "$singularity_image" kingfisher get -r "$library_id" -m ena-ascp ena-ftp prefetch --force --prefetch-max-size 100000000 --output-format-possibilities fastq.gz fastq
     # is it single and unzipped? - unzip typically if ascp fails so it uses prefetch
 
     # is it paired and unzipped - unzip typically if ascp fails so it uses prefetch
@@ -68,7 +68,7 @@ fi
 if [ ! -f "$inpath"/"$library_id""_1.fastq.gz" ] && [ -f "$inpath"/"$library_id""_2.fastq.gz" ]; then 
     echo "$library_id download is missing _1"
     # in the case that _2 is missing we will redownload with a forced overwrite.
-    kingfisher get -r "$library_id" -m ena-ascp ena-ftp prefetch --prefetch-max-size 100000000 --force --output-format-possibilities fastq.gz fastq
+    singularity exec "$singularity_image" kingfisher get -r "$library_id" -m ena-ascp ena-ftp prefetch --prefetch-max-size 100000000 --force --output-format-possibilities fastq.gz fastq
 
     # is it paired and unzipped - unzip typically if ascp fails so it uses prefetch
     if [[ ( -f "$inpath"/"$library_id"".sra_1.fastq" ||  -f "$inpath"/"$library_id""_1.fastq" ) && ( -f "$inpath"/"$library_id"".sra_2.fastq" ||  -f "$inpath"/"$library_id""_2.fastq" ) ]]; then #e.g. if SRR1249328.fastq.gz does not exist and SRR1249328_1.fastq.gz does layout == paired

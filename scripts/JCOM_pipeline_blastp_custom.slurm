@@ -10,10 +10,9 @@
 #SBATCH --mem=120G
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --partition=work
 
-##load modules
-module load blast
-module load diamond
+module load singularity/3.11.4
 
 db_basename=$(basename "$db")
 

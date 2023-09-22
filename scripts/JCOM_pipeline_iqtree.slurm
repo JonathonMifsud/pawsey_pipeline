@@ -5,8 +5,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=6
 #SBATCH --mem=40G
-# Module load
-module load iqtree
+#SBATCH --partition=work
+
+module load singularity/3.11.4
 
 wd="$(dirname "${alignment}")"             # working dir 
 filename="$(basename -- "$alignment")" # filename to be used in outfile

@@ -4,15 +4,13 @@
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=120G
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
+#SBATCH --partition=work
 
 
 # This script runs alignment and trimming using the MAFFT and Trimal tools
 # It will run several trim settings
 
-# Load required modules
-module load mafft
-module load trimal
-
+module load singularity/3.11.4
 # Check if sequences variable is provided
 if [[ -z "$sequences" ]]; then
     echo "Sequences variable is not set. Please specify the sequences to align and trim."

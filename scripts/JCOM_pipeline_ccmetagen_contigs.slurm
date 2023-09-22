@@ -6,15 +6,10 @@
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=120G
 #SBATCH --time=84:00:00
+#SBATCH --partition=work
 
 
-# Have to load in a newer verison of kma so that we can use tmp dir flag
-CONDA_BASE=$(conda info --base) #figure out the path to conda directory so I can source it
-source $CONDA_BASE/etc/profile.d/conda.sh
-conda activate ccmetagen
-
-# Module load
-module load ccmetagen
+module load singularity/3.11.4
 
 # read in list of file names or accessions for example could be several fastq.gz files (paired or single) or just the accession id's
 readarray -t myarray < "$file_of_accessions"

@@ -5,10 +5,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=20G
+#SBATCH --partition=work
 
-# Module load
-module load fasttree
-
+module load singularity/3.11.4
 
 wd="$(dirname "${alignment}")"             # working dir 
 filename="$(basename -- "$alignment")" # filename to be used in outfile
