@@ -19,6 +19,7 @@ singularity pull --name rsem:v1.3.1dfsg-1.sif docker://biocontainers/rsem:v1.3.1
 singularity pull --name jellyfish:v2.2.10-2.sif docker://biocontainers/jellyfish:v2.2.10-2-deb_cv1
 singularity pull --name salmon:v0.12.0ds1-1b1.sif docker://biocontainers/salmon:v0.12.0ds1-1b1-deb_cv1
 singularity pull --name blast:2.14.1.sif docker://ncbi/blast:2.14.1
-singularity pull --name diamond:version2.0.13 docker://buchfink/diamond:version2.0.13
-singularity pull --name megahit:1.2.9 docker://biocontainers/megahit:1.2.9_cv1
-singularity pull --name trimmomatic:0.38 docker://staphb/trimmomatic:0.38
+singularity pull --name diamond:version2.0.13.sif docker://buchfink/diamond:version2.0.13
+singularity pull --name megahit:1.2.9.sif docker://biocontainers/megahit:1.2.9_cv1
+singularity pull --name trimmomatic:0.38.sif docker://staphb/trimmomatic:0.38
+singularity pull --name fastqc:XXXX docker://biocontainers/fastqc:XXXX
