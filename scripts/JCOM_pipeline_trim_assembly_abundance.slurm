@@ -46,7 +46,7 @@ readTrimmomatic() {
         cp /scratch/director2187/jmif9945/test_root/test_virome/adapters/TruSeq3-SE.fa ./
         echo -e "MEGAHIT_SCRIPT: READ TRIMMOMATIC SINGLE - READ QC"
         # Quality control for single-end reads
-        trimmomatic SE \
+        singularity exec "$singularity_image" trimmomatic SE \
             -threads "$CPU" \
             "$inpath"/"$library_id".fastq.gz \
             /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed.fastq.gz \
@@ -55,7 +55,7 @@ readTrimmomatic() {
     if [[ "$layout" == "paired" ]]; then
         cp /scratch/director2187/jmif9945/test_root/test_virome/adapters/joint_TruSeq3_Nextera-PE.fa ./
         echo -e "MEGAHIT_SCRIPT: READ TRIMMOMATIC PAIRED - READ QC"
-        trimmomatic PE \
+        singularity exec "$singularity_image" trimmomatic PE \
             -threads "$CPU" \
             "$inpath"/"$library_id"_1.fastq.gz "$inpath"/"$library_id"_2.fastq.gz \
             /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R1.fastq.gz /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_removed_R1.fastq.gz /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R2.fastq.gz /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_removed_R2.fastq.gz \
@@ -66,7 +66,7 @@ readTrimmomatic() {
 function callMegahit() {
     if [[ "$layout" == "single" ]]; then
         #echo -e "MEGAHIT_SCRIPT: MEGAHIT single - START"
-        megahit --num-cpu-threads "$CPU" \
+        singularity exec "$singularity_image" megahit --num-cpu-threads "$CPU" \
         --memory 0.9 \
         -r /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed.fastq.gz \
         -o "$outpath"/"$library_id"_out
@@ -74,7 +74,7 @@ function callMegahit() {
 
     if [[ "$layout" == "paired" ]]; then
         #echo -e "MEGAHIT_SCRIPT: MEGAHIT PAIRED - START"
-        megahit --num-cpu-threads "$CPU" \
+        singularity exec "$singularity_image" megahit --num-cpu-threads "$CPU" \
         --memory 0.9 \
         -1 /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R1.fastq.gz \
         -2 /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R2.fastq.gz \
@@ -89,8 +89,9 @@ function callMegahit() {
 
 function callRSEM() {
 
+# FIX ME WITH NEW RSEM PATH
     if [[ "$layout" == "single" ]]; then
-    /usr/local/trinity/2.5.1/util/align_and_estimate_abundance.pl --transcripts "$outfinal"/"$library_id".contigs.fa \
+    singularity exec "$singularity_image" /usr/local/trinity/2.5.1/util/align_and_estimate_abundance.pl --transcripts "$outfinal"/"$library_id".contigs.fa \
         --seqType fq \
         --single /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed.fastq.gz \
         --est_method RSEM \
@@ -101,7 +102,7 @@ function callRSEM() {
     fi
 
     if [[ "$layout" == "paired" ]]; then
-    /usr/local/trinity/2.5.1/util/align_and_estimate_abundance.pl --transcripts "$outfinal"/"$library_id".contigs.fa \
+    singularity exec "$singularity_image"  /usr/local/trinity/2.5.1/util/align_and_estimate_abundance.pl --transcripts "$outfinal"/"$library_id".contigs.fa \
         --seqType fq \
         --left /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R1.fastq.gz \
         --right /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R2.fastq.gz \

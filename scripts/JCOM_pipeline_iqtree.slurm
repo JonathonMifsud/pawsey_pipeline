@@ -26,5 +26,5 @@ new_filename="${file_basename_cleaned}_${model}.${file_extension}"
 cp "$alignment" "$new_filename"
 
 # Run iqtree with the new alignment filename
-iqtree -s "$new_filename" -st AA -m "$model" -bb 1000 --mem 90% -alrt 1000 -T AUTO
+singularity exec "$singularity_image" iqtree -s "$new_filename" -st AA -m "$model" -bb 1000 --mem 90% -alrt 1000 -T AUTO
 

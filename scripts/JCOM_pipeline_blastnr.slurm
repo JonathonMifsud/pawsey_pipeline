@@ -23,7 +23,7 @@ module load singularity/3.11.4
 
 # blastx
 function BlastxNR {
-    diamond blastx -q "$inpath"/"$library_id".contigs.fa -d "$db" -o "$outpath"/"$library_id"_nr_blastx_results.txt "$diamond_para" -f 6 qseqid qlen sseqid stitle staxids pident length evalue
+    singularity exec "$singularity_image" diamond blastx -q "$inpath"/"$library_id".contigs.fa -d "$db" -o "$outpath"/"$library_id"_nr_blastx_results.txt "$diamond_para" -f 6 qseqid qlen sseqid stitle staxids pident length evalue
 }
 
 #tool to extract contigs from assembly Blast to fasta

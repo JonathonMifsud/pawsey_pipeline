@@ -14,8 +14,9 @@
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
+singularity_image="/scratch/director2187/jmif9945/modules/diamond:version2.0.13.sif"
 
-while getopts "p:f:r:" 'OPTKEY'; do
+while getopts "p:f:r:s:" 'OPTKEY'; do
     case "$OPTKEY" in
             'p')
                 # 
@@ -28,7 +29,11 @@ while getopts "p:f:r:" 'OPTKEY'; do
             'r')
                 #
                 root_project="$OPTARG"
-                ;;                              
+                ;;
+            's')
+                #
+                singularity_image="$OPTARG"
+                ;;                                              
             '?')
                 echo "INVALID OPTION -- ${OPTARG}" >&2
                 exit 1
@@ -62,6 +67,12 @@ while getopts "p:f:r:" 'OPTKEY'; do
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
 
+    if [ "$singularity_image" = "" ]
+        then
+            echo "No singularity image entered, please enter the full path to a singularity image for this script. This is typically hardcoded in the .sh script but can be manually overridden using the -s PATH"
+    exit 1
+    fi
+
 #lets work out how many jobs we need from the length of input and format the J phrase for the.slurm script
 jMax=$(wc -l < $file_of_accessions)
 jIndex=$(expr $jMax - 1)
@@ -75,7 +86,7 @@ fi
 sbatch --array $jPhrase \
     --output "/scratch/director2187/$user/$root_project/$project/logs/blastxRdRp_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/director2187/$user/$root_project/$project/logs/blastxRdRp_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
-    --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project" \
+    --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project,singularity_image=$singularity_image" \
     --time "$job_time" \
     --account="$root_project" \
     /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_blastxRdRp.slurm

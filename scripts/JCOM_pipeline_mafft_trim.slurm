@@ -6,11 +6,11 @@
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --partition=work
 
-
 # This script runs alignment and trimming using the MAFFT and Trimal tools
 # It will run several trim settings
 
 module load singularity/3.11.4
+
 # Check if sequences variable is provided
 if [[ -z "$sequences" ]]; then
     echo "Sequences variable is not set. Please specify the sequences to align and trim."
@@ -26,21 +26,21 @@ cd "$wd" || { echo "Failed to change to directory $wd"; exit 1; }
 
 # Perform alignment using MAFFT
 mafft_outfile="${filename}_untrimmed_MAFFT_$(date '+%Y%m%d')"
-mafft --ep 0 --genafpair --maxiterate 1000 --thread 6 --threadit 6 "$sequences" > "$mafft_outfile" || { echo "MAFFT alignment failed"; exit 1; }
+singularity exec "$singularity_image" mafft --ep 0 --genafpair --maxiterate 1000 --thread 6 --threadit 6 "$sequences" > "$mafft_outfile" || { echo "MAFFT alignment failed"; exit 1; }
 
 # Trim the alignment with different Trimal parameters
 for gap_threshold in 0.9 0.7; do
     for cons in {10,15,20,30,40,60}; do
         trimal_outfile="${filename}_trimmed_cons${cons}_gt${gap_threshold}_MAFFT_$(date '+%Y%m%d')"
-        trimal -gt "$gap_threshold" -cons "$cons" -in "$mafft_outfile" -out "$trimal_outfile" || { echo "Trimal trimming failed for gap_threshold $gap_threshold and cons $cons"; exit 1; }
+        singularity exec "$singularity_image" trimal -gt "$gap_threshold" -cons "$cons" -in "$mafft_outfile" -out "$trimal_outfile" || { echo "Trimal trimming failed for gap_threshold $gap_threshold and cons $cons"; exit 1; }
     done
 done
 
 # Automated trimming
 trimal_auto_outfile="${filename}_trimmed_auto_MAFFT_$(date '+%Y%m%d')"
-trimal -automated1 -in "$mafft_outfile" -out "$trimal_auto_outfile" || { echo "Trimal automated trimming failed"; exit 1; }
+singularity exec "$singularity_image" trimal -automated1 -in "$mafft_outfile" -out "$trimal_auto_outfile" || { echo "Trimal automated trimming failed"; exit 1; }
 
 # Gappyout trimming
 trimal_gappyout_outfile="${filename}_trimmed_gappyout_MAFFT_$(date '+%Y%m%d')"
-trimal -in "$mafft_outfile" -gappyout -out "$trimal_gappyout_outfile" || { echo "Trimal gappyout trimming failed"; exit 1; }
+singularity exec "$singularity_image" trimal -in "$mafft_outfile" -gappyout -out "$trimal_gappyout_outfile" || { echo "Trimal gappyout trimming failed"; exit 1; }
 

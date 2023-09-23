@@ -23,7 +23,7 @@ module load singularity/3.11.4
 
 # blastx
 function BlastxRdRp {
-    diamond blastx -q "$inpath"/"$library_id".contigs.fa -d "$db" -t "$tempdir" -o "$outpath"/"$library_id"_rdrp_blastx_results.txt -e 1E-4 -c2 -k 3 -b "$MEM" -p "$CPU" -f 6 qseqid qlen sseqid stitle pident length evalue --ultra-sensitive
+    singularity exec "$singularity_image" diamond blastx -q "$inpath"/"$library_id".contigs.fa -d "$db" -t "$tempdir" -o "$outpath"/"$library_id"_rdrp_blastx_results.txt -e 1E-4 -c2 -k 3 -b "$MEM" -p "$CPU" -f 6 qseqid qlen sseqid stitle pident length evalue --ultra-sensitive
 }
 
 #tool to extract contigs from trinity assembly Blast to fasta

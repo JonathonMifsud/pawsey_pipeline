@@ -11,8 +11,9 @@ wd=$(pwd)
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
+singularity_image="/scratch/director2187/jmif9945/modules/diamond:version2.0.13.sif"
 
-while getopts "i:d:p:r:" 'OPTKEY'; do
+while getopts "i:d:p:r:s:" 'OPTKEY'; do
     case "$OPTKEY" in
             'i')
                 # 
@@ -29,7 +30,11 @@ while getopts "i:d:p:r:" 'OPTKEY'; do
             'r')
                 #
                 root_project="$OPTARG"
-                ;;                                 
+                ;;
+            's')
+                #
+                singularity_image="$OPTARG"
+                ;;                                                 
             '?')
                 echo "INVALID OPTION -- ${OPTARG}" >&2
                 exit 1
@@ -66,11 +71,17 @@ while getopts "i:d:p:r:" 'OPTKEY'; do
     exit 1
     fi
 
+    if [ "$singularity_image" = "" ]
+        then
+            echo "No singularity image entered, please enter the full path to a singularity image for this script. This is typically hardcoded in the .sh script but can be manually overridden using the -s PATH"
+    exit 1
+    fi
+    
 input_basename=$(basename "$input")
 
 sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/blastp_$input_basename_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/director2187/$user/$root_project/$project/logs/blastp_$input_basename_$(date '+%Y%m%d')_stderr.txt" \
-    --export="input=$input,db=$db,wd=$wd" \
+    --export="input=$input,db=$db,wd=$wd,singularity_image=$singularity_image" \
     --account="jcomvirome" \
      /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_blastp_custom.slurm
     

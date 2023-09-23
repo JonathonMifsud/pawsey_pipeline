@@ -15,5 +15,5 @@ outpath="$wd"          # location of SRA files to be downloaded to
 # cd working dir
 cd "$wd" || exit
 
-FastTree -lg -quote "$alignment" > "$alignment"_fasttree.newick
+singularity exec "$singularity_image" FastTree -lg -quote "$alignment" > "$alignment"_fasttree.newick
 

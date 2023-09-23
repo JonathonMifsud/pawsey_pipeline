@@ -8,7 +8,6 @@
 #SBATCH --time=84:00:00
 #SBATCH --partition=work
 
-
 module load singularity/3.11.4
 
 # read in list of file names or accessions for example could be several fastq.gz files (paired or single) or just the accession id's
@@ -27,7 +26,7 @@ db=/scratch/director2187/$user/VELAB/db_kma/ncbi_nt_no_env_11jun2019
 cd "$wd"
 
 # Map reads to database with kma
-kma -i "$inpath"/"$library_run" \
+singularity exec "$singularity_image" kma -i "$inpath"/"$library_run" \
     -o "$outpath"/"$library_id"_out_kma \
     -t_db "$db" \
     -t "$threads" \
@@ -37,5 +36,5 @@ kma -i "$inpath"/"$library_run" \
     -and
 
 # Run CCMetagen
-CCMetagen.py -i "$outpath"/"$library_id"_out_kma.res -o "$outpath"/"$library_id"_ccmetagen
+singularity exec "$singularity_image" CCMetagen.py -i "$outpath"/"$library_id"_out_kma.res -o "$outpath"/"$library_id"_ccmetagen
 

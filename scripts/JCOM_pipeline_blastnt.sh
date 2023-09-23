@@ -17,8 +17,9 @@
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
+singularity_image="/scratch/director2187/jmif9945/modules/blast:2.14.1.sif"
 
-while getopts "p:f:r:d:" 'OPTKEY'; do
+while getopts "p:f:r:d:s:" 'OPTKEY'; do
     case "$OPTKEY" in
             'p')
                 # 
@@ -36,6 +37,10 @@ while getopts "p:f:r:d:" 'OPTKEY'; do
                 #
                 db="$OPTARG"
                 ;; 
+            's')
+                #
+                singularity_image="$OPTARG"
+                ;;
             '?')
                 echo "INVALID OPTION -- ${OPTARG}" >&2
                 exit 1
@@ -75,6 +80,12 @@ while getopts "p:f:r:d:" 'OPTKEY'; do
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
 
+    if [ "$singularity_image" = "" ]
+        then
+            echo "No singularity image entered, please enter the full path to a singularity image for this script. This is typically hardcoded in the .sh script but can be manually overridden using the -s PATH"
+    exit 1
+    fi
+
 queue_project="$root_project" # what account to use in the.slurm script this might be differnt from the root dir
 blast_cpu="24"
 blast_para="-max_target_seqs 10 -num_threads $cpu -mt_mode 1 -evalue 1E-10 -subject_besthit -outfmt '6 qseqid qlen sacc salltitles staxids pident length evalue'"
@@ -93,7 +104,7 @@ fi
 sbatch --array $jPhrase \
     --output "/scratch/director2187/$user/$root_project/$project/logs/blastnt_$SLURM_ARRAY_TASK_ID_$project_$queue_$db_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/director2187/$user/$root_project/$project/logs/blastnt_$SLURM_ARRAY_TASK_ID_$project_$queue_$db_$(date '+%Y%m%d')_stderr.txt" \
-    --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project,blast_para=$blast_para,cpu=$cpu,db=$db" \
+    --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project,blast_para=$blast_para,cpu=$cpu,db=$db,singularity_image=$singularity_image" \
     --time "$job_time" \
     --time "$cpu" \
     --time "$mem" \

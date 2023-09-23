@@ -34,7 +34,7 @@ else
 fi
 
 # Map reads to database with kma
-kma -ipe "$inpath"/"$library_id"_1.fastq.gz "$inpath"/"$library_id"_2.fastq.gz \
+singularity exec "$singularity_image" kma -ipe "$inpath"/"$library_id"_1.fastq.gz "$inpath"/"$library_id"_2.fastq.gz \
     -o "$outpath"/"$library_id"_out_kma \
     -t_db "$db" \
     -t "$threads" \
@@ -44,6 +44,6 @@ kma -ipe "$inpath"/"$library_id"_1.fastq.gz "$inpath"/"$library_id"_2.fastq.gz \
     -and || { echo "Error: Failed to execute kma."; exit 1; }
 
 # Run CCMetagen
-CCMetagen.py -i "$outpath"/"$library_id"_out_kma.res -o "$outpath"/"$library_id"_ccmetagen \
+singularity exec "$singularity_image" CCMetagen.py -i "$outpath"/"$library_id"_out_kma.res -o "$outpath"/"$library_id"_ccmetagen \
 || { echo "Error: Failed to execute CCMetagen."; exit 1; }
 

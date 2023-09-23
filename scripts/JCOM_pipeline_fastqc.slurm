@@ -17,7 +17,7 @@ cd /scratch/director2187/$user/jcomvirome/"$project"/fastqc
 readarray -t myarray < "$file_of_accessions"
 export library_run=${myarray["$SLURM_ARRAY_TASK_ID"]}
 
-fastqc "$library_run" \
+singularity exec "$singularity_image" fastqc "$library_run" \
     --format fastq \
     --threads 4 \
     --outdir /scratch/director2187/$user/jcomvirome/"$project"/fastqc

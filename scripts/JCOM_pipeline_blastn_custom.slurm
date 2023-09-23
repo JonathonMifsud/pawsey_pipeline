@@ -9,6 +9,7 @@
 #SBATCH --time=24:00:00
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --mail-type=BEGIN,END,FAIL
+
 #SBATCH --partition=work
 
 ##load modules
@@ -18,7 +19,7 @@ nt_db_basename=$(basename "$db")
 
 # blastn
 function Blastn {
-    blastn -query "$input" -db "$db" -out "$outpath"/"$library_id"_"$nt_db_basename"_nt_blastn_results.txt -max_target_seqs 10 -num_threads "$CPU" -mt_mode 0 -evalue 1E-4 -subject_besthit -outfmt '6 qseqid qlen sacc salltitles staxids pident length evalue'
+    singularity exec "$singularity_image" blastn -query "$input" -db "$db" -out "$outpath"/"$library_id"_"$nt_db_basename"_nt_blastn_results.txt -max_target_seqs 10 -num_threads "$CPU" -mt_mode 0 -evalue 1E-4 -subject_besthit -outfmt '6 qseqid qlen sacc salltitles staxids pident length evalue'
 }
 
 #tool to extract contigs from assembly Blast to fasta

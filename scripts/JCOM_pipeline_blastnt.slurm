@@ -24,7 +24,7 @@
 module load singularity/3.11.4
 
 function Blastn {
-    blastn -query "$inpath"/"$library_id".contigs.fa -db "$db" -out "$outpath"/"$library_id"_nt_blastn_results.txt -max_target_seqs 10 -num_threads 22 -mt_mode 1 -evalue 1E-10 -subject_besthit -outfmt '6 qseqid qlen sacc salltitles staxids pident length evalue'
+    singularity exec "$singularity_image" blastn -query "$inpath"/"$library_id".contigs.fa -db "$db" -out "$outpath"/"$library_id"_nt_blastn_results.txt -max_target_seqs 10 -num_threads 22 -mt_mode 1 -evalue 1E-10 -subject_besthit -outfmt '6 qseqid qlen sacc salltitles staxids pident length evalue'
 }
 
 #tool to extract contigs from assembly Blast to fasta
