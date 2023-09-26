@@ -36,10 +36,14 @@ chmod +x ./*
 find . -type f -exec bash -c 'new_file="${1/JCOM_pipeline/$2}"; [ "$1" != "$new_file" ] && mv "$1" "$new_file"' _ {} "$project" \;
 
 # Replace project-related variables in the script files
-sed -i "s/JCOM_pipeline_virome/$project/g" *
-sed -i "s/JCOM_pipeline/$project/g" *
-sed -i "s/jcomvirome/$root/g" *
-sed -i "s/jmif9945@uni.sydney.edu.au/$email/g" *
+for file in *; do
+  if [ -f "$file" ]; then
+    sed -i "s/JCOM_pipeline_virome/$project/g" "$file"
+    sed -i "s/JCOM_pipeline/$project/g" "$file"
+    sed -i "s/jcomvirome/$root/g" "$file"
+    sed -i "s/jmif9945@uni.sydney.edu.au/$email/g" "$file"
+  fi
+done
 
 mv * ../../
 cd ../../
@@ -50,7 +54,7 @@ for file in "$backup_dir"/*; do
   base_file="${file##*/}"  # Extract the base filename from the file path
 
   if [[ ! -f "${base_file%.*}" && ! -f "${base_file%.*}.bak" ]]; then
-    cp "$file" "${base_file%.*}"
+    cp -r "$file" "${base_file%.*}"
     echo "Copied $file to ${base_file%.*}"
   fi
 done
