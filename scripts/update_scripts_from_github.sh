@@ -33,11 +33,11 @@ cd pawsey_pipeline/scripts
 chmod +x ./*
 
 # Rename files with project name substitution
-find . -type f -exec bash -c 'new_file="${1/JCOM_pipeline/$2}"; [ "$1" != "$new_file" ] && mv "$1" "$new_file"' _ {} "$project" \;
+find . -maxdepth 1 -type f -exec bash -c 'new_file="${1/JCOM_pipeline/$2}"; [ "$1" != "$new_file" ] && mv "$1" "$new_file"' _ {} "$project" \;
 
-# Replace project-related variables in the script files
+# Replace project-related variables in the script files (excluding setup.sh and update_scripts_from_github.sh)
 for file in *; do
-  if [ -f "$file" ]; then
+  if [ -f "$file" ] && [ "$file" != "setup.sh" ] && [ "$file" != "update_scripts_from_github.sh" ]; then
     sed -i "s/JCOM_pipeline_virome/$project/g" "$file"
     sed -i "s/JCOM_pipeline/$project/g" "$file"
     sed -i "s/jcomvirome/$root/g" "$file"
@@ -45,7 +45,10 @@ for file in *; do
   fi
 done
 
+# Move modified files back to the current directory
 mv * ../../
+
+# Cleanup
 cd ../../
 rm -r pawsey_pipeline
 
