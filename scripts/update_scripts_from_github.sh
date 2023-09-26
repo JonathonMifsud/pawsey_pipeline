@@ -13,6 +13,8 @@ file_path="setup.sh"
 root=$(grep -o 'root="[^"]*"' "$file_path" | cut -d'"' -f2)
 project=$(grep -o 'project="[^"]*"' "$file_path" | cut -d'"' -f2)
 email=$(grep -o 'email="[^"]*"' "$file_path" | cut -d'"' -f2)
+user=$(grep -o 'user="[^"]*"' "$file_path" | cut -d'"' -f2)
+account=$(grep -o 'account="[^"]*"' "$file_path" | cut -d'"' -f2)
 
 # Move existing files (excluding the backup directory) to the backup directory
 for file in *; do
@@ -39,9 +41,9 @@ sed -i "s/JCOM_pipeline/$project/g" *
 sed -i "s/jcomvirome/$root/g" *
 sed -i "s/jmif9945@uni.sydney.edu.au/$email/g" *
 
-mv * ../../../
-cd ../../../
-rm -r BatchArtemisSRAMiner
+mv * ../../
+cd ../../
+rm -r pawsey_pipeline
 
 # Copy missing files from the backup directory to the current directory
 for file in "$backup_dir"/*; do
