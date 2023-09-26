@@ -13,7 +13,8 @@
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
-singularity_image="/scratch/director2187/jmif9945/modules/fasttree_v2.1.10-2.sif"
+account="director2187"
+singularity_image="/scratch/$account/jmif9945/modules/fasttree_v2.1.10-2.sif"
 
 while getopts "i:r:p:s:" 'OPTKEY'; do
     case "$OPTKEY" in
@@ -69,9 +70,9 @@ while getopts "i:r:p:s:" 'OPTKEY'; do
     exit 1
     fi
     
-sbatch --output="/scratch/director2187/$user/"$root_project"/"$project"/logs/fasttree_$(date '+%Y%m%d')_stout.txt" \
-    --error="/scratch/director2187/$user/"$root_project"/"$project"/fasttree_$(date '+%Y%m%d')_stderr.txt" \
-    --export="alignment=$alignment,singularity_image=$singularity_image" \
-    --time "$job_time" \
-    --account="$root_project" \
-    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_fasttree.slurm
+sbatch --output="/scratch/$account/$user/"$root_project"/"$project"/logs/fasttree_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/$account/$user/"$root_project"/"$project"/fasttree_$(date '+%Y%m%d')_stderr.txt" \
+    --export="alignment,singularity_image" \
+    --time "12:00:00" \
+    --account="$account" \
+    /scratch/$account/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_fasttree.slurm

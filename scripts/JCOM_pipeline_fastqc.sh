@@ -6,8 +6,8 @@
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
-# FIX ME
-singularity_image="/scratch/director2187/jmif9945/modules/blast:2.14.1.sif"
+account="director2187"
+singularity_image="/scratch/$account/jmif9945/modules/blast:2.14.1.sif"
 
 while getopts "p:f:r:s:" 'OPTKEY'; do
     case "$OPTKEY" in
@@ -54,10 +54,10 @@ while getopts "p:f:r:s:" 'OPTKEY'; do
 
     if [ "$file_of_accessions" = "" ]
         then
-            echo "No file containing files to run specified running all files in /scratch/director2187/$user/jcomvirome/$project/raw_reads/ and /scratch/director2187/$user/jcomvirome/$project/trimmed_files/"
-            ls -d /scratch/director2187/$user/jcomvirome/"$project"/raw_reads/*.fastq.gz > /scratch/director2187/$user/jcomvirome/"$project"/raw_reads/file_of_accessions
-            ls -d /scratch/director2187/$user/jcomvirome/"$project"/trimmed_reads/*.fastq.gz >> /scratch/director2187/$user/jcomvirome/"$project"/raw_reads/file_of_accessions
-            export file_of_accessions="/scratch/director2187/$user/jcomvirome/$project/raw_reads/file_of_accessions"
+            echo "No file containing files to run specified running all files in /scratch/$account/$user/jcomvirome/$project/raw_reads/ and /scratch/$account/$user/jcomvirome/$project/trimmed_files/"
+            ls -d /scratch/$account/$user/jcomvirome/"$project"/raw_reads/*.fastq.gz > /scratch/$account/$user/jcomvirome/"$project"/raw_reads/file_of_accessions
+            ls -d /scratch/$account/$user/jcomvirome/"$project"/trimmed_reads/*.fastq.gz >> /scratch/$account/$user/jcomvirome/"$project"/raw_reads/file_of_accessions
+            export file_of_accessions="/scratch/$account/$user/jcomvirome/$project/raw_reads/file_of_accessions"
         else    
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
@@ -78,8 +78,10 @@ if [ "$jPhrase" == "0-0" ]; then
     export jPhrase="0-1"
 fi
 
-sbatch --export="project=$project,file_of_accessions=$file_of_accessions,singularity_image=$singularity_image" \
+sbatch --export="project,file_of_accessions,singularity_image=$singularity_image" \
     --array $jPhrase \
-    --output "/scratch/director2187/$user/$root_project/$project/logs/fastqc_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
-    --error="/scratch/director2187/$user/$root_project/$project/logs/fastqc_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
-    /scratch/director2187/$user/jcomvirome/random_scripts/project_scripts/project_fastqc.slurm
+    --output "/scratch/$account/$user/$root_project/$project/logs/fastqc_%A_%a_$project_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/$account/$user/$root_project/$project/logs/fastqc_%A_%a_$project_$(date '+%Y%m%d')_stderr.txt" \
+    --time "1:00:00" \
+    --account="$account" \
+    /scratch/$account/$user/jcomvirome/random_scripts/project_scripts/project_fastqc.slurm

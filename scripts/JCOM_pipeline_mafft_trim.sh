@@ -9,7 +9,8 @@
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
-singularity_image="/scratch/director2187/jmif9945/modules/mafft:v7.407-2.sif"
+account="director2187"
+singularity_image="/scratch/$account/jmif9945/modules/mafft:v7.407-2.sif"
 
 while getopts "i:r:s:" 'OPTKEY'; do
     case "$OPTKEY" in
@@ -61,9 +62,9 @@ while getopts "i:r:s:" 'OPTKEY'; do
     exit 1
     fi
     
-sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stout.txt" \
-    --error="/scratch/director2187/$user/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stderr.txt" \
-    --export="sequences=$sequences,singularity_image=$singularity_image" \
-    --time "$job_time" \
-    --account="$root_project" \
-   /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_mafft_trim.slurm
+sbatch --output="/scratch/$account/$user/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/$account/$user/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stderr.txt" \
+    --export="sequences,singularity_image" \
+    --time "12:00:00" \
+    --account="$account" \
+   /scratch/$account/$user/$root_project/$project/scripts/JCOM_pipeline_mafft_trim.slurm

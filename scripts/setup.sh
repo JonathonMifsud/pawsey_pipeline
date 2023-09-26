@@ -14,11 +14,14 @@ project="JCOM_pipeline_virome"
 email="user@uni.sydney.edu.au"
 
 # user
-user=jmif9945
+user="jmif9945"
+
+# account
+account="director2187"
 
 # Define directory paths for convenience
-group_dir="/scratch/director2187/$user/${root}/${project}"
-scratch_dir="/scratch/director2187/$user/${root}/${project}"
+group_dir="/scratch/$account/$user/${root}/${project}"
+scratch_dir="/scratch/$account/$user/${root}/${project}"
 
 # Create project directories in /project and /scratch
 # The -p option creates parent directories as needed and doesn't throw an error if the directory already exists.

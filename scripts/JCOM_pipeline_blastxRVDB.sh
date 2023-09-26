@@ -14,7 +14,8 @@
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
-singularity_image="/scratch/director2187/jmif9945/modules/diamond:version2.0.13.sif"
+account="director2187"
+singularity_image="/scratch/$account/jmif9945/modules/diamond:version2.0.13.sif"
 
 
 while getopts "p:f:r:d:" 'OPTKEY'; do
@@ -66,9 +67,9 @@ while getopts "p:f:r:d:" 'OPTKEY'; do
 
     if [ "$file_of_accessions" = "" ]
         then
-            echo "No file containing files to run specified running all files in /scratch/director2187/$user/$root_project/$project/contigs/final_contigs/"
-            ls -d /scratch/director2187/$user/"$root_project"/"$project"/contigs/final_contigs/*.fa > /scratch/director2187/$user/"$root_project"/"$project"/contigs/final_contigs/file_of_accessions_for_blastx_RVDB
-            export file_of_accessions="/scratch/director2187/$user/$root_project/$project/contigs/final_contigs/file_of_accessions_for_blastx_RVDB"
+            echo "No file containing files to run specified running all files in /scratch/$account/$user/$root_project/$project/contigs/final_contigs/"
+            ls -d /scratch/$account/$user/"$root_project"/"$project"/contigs/final_contigs/*.fa > /scratch/$account/$user/"$root_project"/"$project"/contigs/final_contigs/file_of_accessions_for_blastx_RVDB
+            export file_of_accessions="/scratch/$account/$user/$root_project/$project/contigs/final_contigs/file_of_accessions_for_blastx_RVDB"
         else    
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
@@ -91,14 +92,14 @@ fi
 
 if [ "$db" = "" ]
     then
-        echo "No database specified. Use -d option to specify the database, e.g, -d /scratch/director2187/$user/VELAB/Databases/Blast/RVDB/U-RVDBv22.0-prot-exo_curated.dmnd"
+        echo "No database specified. Use -d option to specify the database, e.g, -d /scratch/$account/$user/VELAB/Databases/Blast/RVDB/U-RVDBv22.0-prot-exo_curated.dmnd"
         exit 1
 fi
 
 sbatch --array $jPhrase \
-    --output "/scratch/director2187/$user/$root_project/$project/logs/blastxRVDB_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
-    --error="/scratch/director2187/$user/$root_project/$project/logs/blastxRVDB_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
-    --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project,db=$db,singularity_image=$singularity_image" \
-    --time "$job_time" \
-    --account="$root_project" \
-    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_blastxRVDB.slurm
+    --output "/scratch/$account/$user/$root_project/$project/logs/blastxRVDB_%A_%a_$project_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/$account/$user/$root_project/$project/logs/blastxRVDB_%A_%a_$project_$(date '+%Y%m%d')_stderr.txt" \
+    --export="project,file_of_accessions,root_project,db,singularity_image" \
+    --time "12:00:00" \
+    --account="$account" \
+    /scratch/$account/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_blastxRVDB.slurm

@@ -12,10 +12,11 @@
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
+account="director2187"
 
-trimmomatic_image="/scratch/director2187/jmif9945/modules/trinityrnaseq.v2.15.1.simg"
-megahit_image="/scratch/director2187/jmif9945/modules/megahit:1.2.9.sif"
-rsem_image="/scratch/director2187/jmif9945/modules/trinityrnaseq.v2.15.1.simg"
+trimmomatic_image="/scratch/$account/jmif9945/modules/trinityrnaseq.v2.15.1.simg"
+megahit_image="/scratch/$account/jmif9945/modules/megahit:1.2.9.sif"
+rsem_image="/scratch/$account/jmif9945/modules/trinityrnaseq.v2.15.1.simg"
 
 # you can specify the accessions to look for using -f 
 # or if you don't specify -f it will run will all of the .fastq.gz files in your raw_reads folder
@@ -73,9 +74,9 @@ while getopts "p:f:r:t:m:a:" 'OPTKEY'; do
     
     if [ "$file_of_accessions" = "" ]
         then
-            echo "No file containing files to run specified running all files in /scratch/director2187/$user/$root_project/$project/raw_reads/"
-            ls -d /scratch/director2187/$user/"$root_project"/"$project"/raw_reads/*.fastq.gz > /scratch/director2187/$user/"$root_project"/"$project"/raw_reads/file_of_accessions_for_assembly
-            export file_of_accessions="/scratch/director2187/$user/$root_project/$project/raw_reads/file_of_accessions_for_assembly"
+            echo "No file containing files to run specified running all files in /scratch/$account/$user/$root_project/$project/raw_reads/"
+            ls -d /scratch/$account/$user/"$root_project"/"$project"/raw_reads/*.fastq.gz > /scratch/$account/$user/"$root_project"/"$project"/raw_reads/file_of_accessions_for_assembly
+            export file_of_accessions="/scratch/$account/$user/$root_project/$project/raw_reads/file_of_accessions_for_assembly"
         else
         # just include the sra or lib id in this file as path is already specficied    
             export file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
@@ -110,9 +111,9 @@ if [ "$jPhrase" == "0-0" ]; then
 fi
 
 sbatch --array $jPhrase \
-    --output "/scratch/director2187/$user/$root_project/$project/logs/trim_assemble_abundance_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stout.txt" \
-    --error="/scratch/director2187/$user/$root_project/$project/logs/trim_assemble_abundance_$SLURM_ARRAY_TASK_ID_$project_$(date '+%Y%m%d')_stderr.txt" \
-    --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project,$trimmomatic_image=trimmomatic_image,$megahit_image=megahit_image,$rsem_image=rsem_image" \
+    --output "/scratch/$account/$user/$root_project/$project/logs/trim_assemble_abundance_%A_%a_$project_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/$account/$user/$root_project/$project/logs/trim_assemble_abundance_%A_%a_$project_$(date '+%Y%m%d')_stderr.txt" \
+    --export="project,file_of_accessions,root_project,trimmomatic_image,megahit_image,rsem_image" \
     --time "00:10:00" \
-    --account="$root_project" \
-    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_trim_assembly_abundance.slurm
+    --account="$account" \
+    /scratch/$account/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_trim_assembly_abundance.slurm

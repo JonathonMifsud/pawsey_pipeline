@@ -10,7 +10,8 @@ wd=$(pwd)
 user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
-singularity_image="/scratch/director2187/jmif9945/modules/blast:2.14.1.sif"
+account="director2187"
+singularity_image="/scratch/$account/jmif9945/modules/blast:2.14.1.sif"
 
 while getopts "i:d:p:r:s:" 'OPTKEY'; do
     case "$OPTKEY" in
@@ -54,7 +55,7 @@ while getopts "i:d:p:r:s:" 'OPTKEY'; do
 
     if [ "$db" = "" ]
         then
-            echo "No database specified. Use -d option to specify the database. e.g., -d /scratch/director2187/$user/VELAB/Databases/Blast/nt.Jul-2023/nt"
+            echo "No database specified. Use -d option to specify the database. e.g., -d /scratch/$account/$user/VELAB/Databases/Blast/nt.Jul-2023/nt"
             exit 1
     fi
 
@@ -79,8 +80,9 @@ while getopts "i:d:p:r:s:" 'OPTKEY'; do
 
 input_basename=$(basename "$input")
 
-sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/blastn_$input_basename_$(date '+%Y%m%d')_stout.txt" \
-    --error="/scratch/director2187/$user/$root_project/$project/logs/blastn_$input_basename_$(date '+%Y%m%d')_stderr.txt" \
+sbatch --output="/scratch/$account/$user/$root_project/$project/logs/blastn_$input_basename_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/$account/$user/$root_project/$project/logs/blastn_$input_basename_$(date '+%Y%m%d')_stderr.txt" \
     --export="input=$input,db=$db,wd=$wd,singularity_image=$singularity_image" \
-    --account="jcomvirome" \
-     /scratch/director2187/$user/$root_project/$project/scripts/JCOM_pipeline_blastn_custom.slurm
+    --time "12:00:00" \
+    --account="$account" \
+     /scratch/$account/$user/$root_project/$project/scripts/JCOM_pipeline_blastn_custom.slurm

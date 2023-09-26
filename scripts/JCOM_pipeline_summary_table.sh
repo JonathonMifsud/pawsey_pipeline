@@ -13,6 +13,7 @@ user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
 file_of_accessions=""
+account="director2187"
 
 while getopts "p:r:f:" 'OPTKEY'; do
     case "$OPTKEY" in
@@ -52,14 +53,14 @@ done
 
     if [ "$file_of_accessions" = "" ]
         then
-            echo "No accessions provided (-f), Summary table will generated using all accessions in /scratch/director2187/$user/"$root_project"/"$project"/contigs/ /scratch/director2187/$user/"$root_project"/"$project"/blast_results/ etc"
+            echo "No accessions provided (-f), Summary table will generated using all accessions in /scratch/$account/$user/"$root_project"/"$project"/contigs/ /scratch/$account/$user/"$root_project"/"$project"/blast_results/ etc"
         else    
             file_of_accessions=$(ls -d "$file_of_accessions") # Get full path to file_of_accessions file when provided by the user
     fi
 
-sbatch --output="/scratch/director2187/$user/$root_project/$project/logs/summary_table_creation_$project_$(date '+%Y%m%d')_stout.txt" \
-    --error="/scratch/director2187/$user/$root_project/$project/logs/summary_table_creation_$project_$(date '+%Y%m%d')_stderr.txt" \
-    --export="project=$project,root_project=$root_project,file_of_accessions=$file_of_accessions" \
-    --time "$job_time" \
-    --account="$root_project" \
-    /scratch/director2187/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_summary_table.slurm
+sbatch --output="/scratch/$account/$user/$root_project/$project/logs/summary_table_creation_$project_$(date '+%Y%m%d')_stout.txt" \
+    --error="/scratch/$account/$user/$root_project/$project/logs/summary_table_creation_$project_$(date '+%Y%m%d')_stderr.txt" \
+    --export="project,root_project,file_of_accessions" \
+    --time "12:00:00" \
+    --account="$account" \
+    /scratch/$account/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_summary_table.slurm
