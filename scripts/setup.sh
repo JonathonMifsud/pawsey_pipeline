@@ -50,6 +50,7 @@ for file in *; do
   if [ "$file" != "setup.sh" ]; then
     sed -i "s/JCOM_pipeline_virome/$project/g" "$file"
     sed -i "s/JCOM_pipeline/$project/g" "$file"
+    sed -i "s/_virome_virome/_virome/g" "$file"
     sed -i "s/jcomvirome/$root/g" "$file"
     sed -i "s/jmif9945@uni.sydney.edu.au/$email/g" "$file"
     sed -i "s/jmif9945/$user/g" "$file"
