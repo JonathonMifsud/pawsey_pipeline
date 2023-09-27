@@ -22,20 +22,6 @@
 
 module load singularity/3.11.4
 
-# Load necessary modules
-# module load megahit
-# module load trimmomatic
-# module load trinity/2.5.1
-# module load rsem/1.3.0
-# module load bowtie2/2.3.3.1
-# module load samtools/1.6
-# module load jellyfish/2.2.6
-# module load salmon/0.8.2
-# module load java/jdk1.8.0_111
-# module unload bowtie2/2.2.5
-# module unload perl/5.20.1
-# module load perl/5.24.0
-
 # Define functions
 
 # Function to quality trim and remove adapter sequences from reads
@@ -49,7 +35,7 @@ readTrimmomatic() {
         singularity exec -e "$trimmomatic_image" java -jar /usr/local/bin/trinity-plugins/Trimmomatic/trimmomatic-0.36.jar SE \
             -threads "$CPU" \
             "$inpath"/"$library_id".fastq.gz \
-            /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed.fastq.gz \
+            /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed.fastq.gz \
             ILLUMINACLIP:TruSeq3-SE.fa:2:30:10 SLIDINGWINDOW:4:5 LEADING:5 TRAILING:5 MINLEN:25
     fi
     if [[ "$layout" == "paired" ]]; then
@@ -59,7 +45,7 @@ readTrimmomatic() {
         singularity exec -e "$trimmomatic_image" java -jar /usr/local/bin/trinity-plugins/Trimmomatic/trimmomatic-0.36.jar PE \
             -threads "$CPU" \
             "$inpath"/"$library_id"_1.fastq.gz "$inpath"/"$library_id"_2.fastq.gz \
-            /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R1.fastq.gz /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_removed_R1.fastq.gz /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R2.fastq.gz /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_removed_R2.fastq.gz \
+            /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R1.fastq.gz /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_removed_R1.fastq.gz /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R2.fastq.gz /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_removed_R2.fastq.gz \
             ILLUMINACLIP:joint_TruSeq3_Nextera-PE.fa:2:30:10 SLIDINGWINDOW:4:5 LEADING:5 TRAILING:5 MINLEN:25
     fi
    }
@@ -69,7 +55,7 @@ function callMegahit() {
         #echo -e "MEGAHIT_SCRIPT: MEGAHIT single - START"
         singularity exec -e "$megahit_image" megahit --num-cpu-threads "$CPU" \
         --memory 0.9 \
-        -r /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed.fastq.gz \
+        -r /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed.fastq.gz \
         -o "$outpath"/"$library_id"_out
     fi
 
@@ -77,8 +63,8 @@ function callMegahit() {
         #echo -e "MEGAHIT_SCRIPT: MEGAHIT PAIRED - START"
         singularity exec -e "$megahit_image" megahit --num-cpu-threads "$CPU" \
         --memory 0.9 \
-        -1 /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R1.fastq.gz \
-        -2 /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R2.fastq.gz \
+        -1 /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R1.fastq.gz \
+        -2 /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R2.fastq.gz \
         -o "$outpath"/"$library_id"_out
     fi
     
@@ -94,10 +80,10 @@ function callRSEM() {
     if [[ "$layout" == "single" ]]; then
     singularity exec -e "$rsem_image" /usr/local/bin/util/align_and_estimate_abundance.pl --transcripts "$outfinal"/"$library_id".contigs.fa \
         --seqType fq \
-        --single /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed.fastq.gz \
+        --single /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed.fastq.gz \
         --est_method RSEM \
         --aln_method bowtie2 \
-        --output_dir /scratch/director2187/$user/"$root_project"/"$project"/abundance/"$library_id"_abundance \
+        --output_dir /scratch/$account/$user/"$root_project"/"$project"/abundance/"$library_id"_abundance \
         --thread_count "$CPU" \
         --prep_reference
     fi
@@ -105,27 +91,27 @@ function callRSEM() {
     if [[ "$layout" == "paired" ]]; then
     singularity exec -e "$rsem_image" /usr/local/bin/util/align_and_estimate_abundance.pl --transcripts "$outfinal"/"$library_id".contigs.fa \
         --seqType fq \
-        --left /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R1.fastq.gz \
-        --right /scratch/director2187/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R2.fastq.gz \
+        --left /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R1.fastq.gz \
+        --right /scratch/$account/$user/"$root_project"/"$project"/trimmed_reads/"$library_id"_trimmed_R2.fastq.gz \
         --est_method RSEM \
         --aln_method bowtie2 \
-        --output_dir /scratch/director2187/$user/"$root_project"/"$project"/abundance/"$library_id"_abundance \
+        --output_dir /scratch/$account/$user/"$root_project"/"$project"/abundance/"$library_id"_abundance \
         --thread_count "$CPU" \
         --prep_reference
     fi
-    cp /scratch/director2187/$user/"$root_project"/"$project"/abundance/"$library_id"_abundance/RSEM.isoforms.results "$outabundance"/"$library_id"_RSEM.isoforms.results
-    rm /scratch/director2187/$user/"$root_project"/"$project"/abundance/"$library_id"_abundance/bowtie2.bam
+    cp /scratch/$account/$user/"$root_project"/"$project"/abundance/"$library_id"_abundance/RSEM.isoforms.results "$outabundance"/"$library_id"_RSEM.isoforms.results
+    rm /scratch/$account/$user/"$root_project"/"$project"/abundance/"$library_id"_abundance/bowtie2.bam
     rm "$outfinal"/"$library_id".contigs.fa.*
     #rm -r /project/"$root_project"/"$project"/abundance/"$library_id"_abundance
 }
 
 # variables change these to whatever you like!
-wd=/scratch/director2187/$user/"$root_project"/"$project"/contigs
-inpath=/scratch/director2187/$user/"$root_project"/"$project"/raw_reads         # location of reads and filenames
-outpath=/scratch/director2187/$user/"$root_project"/"$project"/contigs        # location of megahit output
-outfinal=/scratch/director2187/$user/"$root_project"/"$project"/contigs/final_contigs  # location of cleaned megahit output
-outlogs=/scratch/director2187/$user/"$root_project"/"$project"/contigs/final_logs  # location of cleaned megahit output
-outabundance=/scratch/director2187/$user/"$root_project"/"$project"/abundance/final_abundance  # location of cleaned megahit output
+wd=/scratch/$account/$user/"$root_project"/"$project"/contigs
+inpath=/scratch/$account/$user/"$root_project"/"$project"/raw_reads         # location of reads and filenames
+outpath=/scratch/$account/$user/"$root_project"/"$project"/contigs        # location of megahit output
+outfinal=/scratch/$account/$user/"$root_project"/"$project"/contigs/final_contigs  # location of cleaned megahit output
+outlogs=/scratch/$account/$user/"$root_project"/"$project"/contigs/final_logs  # location of cleaned megahit output
+outabundance=/scratch/$account/$user/"$root_project"/"$project"/abundance/final_abundance  # location of cleaned megahit output
 mkdir -p "$outfinal"                                     # create dir if this doesn't already exist
 mkdir -p "$outlogs"   
 mkdir -p "$outabundance" 
