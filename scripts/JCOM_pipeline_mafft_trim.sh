@@ -64,7 +64,7 @@ while getopts "i:r:s:" 'OPTKEY'; do
     
 sbatch --output="/scratch/$account/$user/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/$account/$user/$root_project/$project/logs/mafft_alignment_$(date '+%Y%m%d')_stderr.txt" \
-    --export="sequences,singularity_image" \
+    --export="sequences=$sequences,project=$project,root_project=$root_project,singularity_image=$singularity_image,account=$account,user=$user" \
     --time "12:00:00" \
     --account="$account" \
    /scratch/$account/$user/$root_project/$project/scripts/JCOM_pipeline_mafft_trim.slurm

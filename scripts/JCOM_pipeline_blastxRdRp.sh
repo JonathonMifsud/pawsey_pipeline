@@ -87,7 +87,7 @@ fi
 sbatch --array $jPhrase \
     --output "/scratch/$account/$user/$root_project/$project/logs/blastxRdRp_%A_%a_$project_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/$account/$user/$root_project/$project/logs/blastxRdRp_%A_%a_$project_$(date '+%Y%m%d')_stderr.txt" \
-    --export="project,file_of_accessions,root_project,singularity_image" \
+    --export="project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project,singularity_image=$singularity_image,account=$account,user=$user,input=$input,wd=$wd" \
     --time "12:00:00" \
     --account="$account" \
     /scratch/$account/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_blastxRdRp.slurm

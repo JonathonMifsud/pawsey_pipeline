@@ -77,7 +77,7 @@ while getopts "i:m:r:p:s:" 'OPTKEY'; do
     
 sbatch --output="/scratch/$account/$user/$root_project/$project/logs/iqtree_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/$account/$user/$root_project/$project/logs/iqtree_$(date '+%Y%m%d')_stderr.txt" \
-    --export="alignment,model,singularity_image" \
+    --export="alignment=$alignment,model=$model,project=$project,root_project=$root_project,singularity_image=$singularity_image,account=$account,user=$user" \
     --time "12:00:00" \
     --account="$account" \
     /scratch/$account/$user/$root_project/$project/scripts/JCOM_pipeline_iqtree.slurm

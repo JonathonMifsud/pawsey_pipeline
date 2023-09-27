@@ -105,7 +105,7 @@ fi
 sbatch --array $jPhrase \
     --output "/scratch/$account/$user/$root_project/$project/logs/blastnt_%A_%a_$project_$queue_$db_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/$account/$user/$root_project/$project/logs/blastnt_%A_%a_$project_$queue_$db_$(date '+%Y%m%d')_stderr.txt" \
-    --export="project,file_of_accessions,root_project,blast_para,cpu,db,singularity_image" \
+    --export="project=$project,file_of_accessions=$file_of_accessions,cpu=$cpu,blast_para=$blast_para,db=$db,root_project=$root_project,singularity_image=$singularity_image,account=$account,user=$user" \
     --time "12:00:00" \
     --account="$account" \
     /scratch/$account/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_blastnt.slurm

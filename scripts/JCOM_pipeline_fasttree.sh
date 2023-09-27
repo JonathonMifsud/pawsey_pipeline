@@ -72,7 +72,7 @@ while getopts "i:r:p:s:" 'OPTKEY'; do
     
 sbatch --output="/scratch/$account/$user/"$root_project"/"$project"/logs/fasttree_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/$account/$user/"$root_project"/"$project"/fasttree_$(date '+%Y%m%d')_stderr.txt" \
-    --export="alignment,singularity_image" \
+    --export="project=$project,root_project=$root_project,singularity_image=$singularity_image,account=$account,user=$user,alignment=$alignment" \
     --time "12:00:00" \
     --account="$account" \
     /scratch/$account/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_fasttree.slurm

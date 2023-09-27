@@ -81,7 +81,7 @@ input_basename=$(basename "$input")
 
 sbatch --output="/scratch/$account/$user/$root_project/$project/logs/blastx_$input_basename_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/$account/$user/$root_project/$project/logs/blastx_$input_basename_$(date '+%Y%m%d')_stderr.txt" \
-    --export="input,db,wd,singularity_image" \
+    --export="project=$project,root_project=$root_project,singularity_image=$singularity_image,account=$account,user=$user,wd=$wd,input=$input,wd=$wd" \
     --time "12:00:00" \
     --account="$account" \
      /scratch/$account/$user/$root_project/$project/scripts/JCOM_pipeline_blastx_custom.slurm

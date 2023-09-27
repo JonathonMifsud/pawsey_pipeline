@@ -78,7 +78,7 @@ if [ "$jPhrase" == "0-0" ]; then
     export jPhrase="0-1"
 fi
 
-sbatch --export="project,file_of_accessions,singularity_image=$singularity_image" \
+sbatch --export="project=$project,root_project=$root_project,singularity_image=$singularity_image,account=$account,user=$user" \
     --array $jPhrase \
     --output "/scratch/$account/$user/$root_project/$project/logs/fastqc_%A_%a_$project_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/$account/$user/$root_project/$project/logs/fastqc_%A_%a_$project_$(date '+%Y%m%d')_stderr.txt" \
