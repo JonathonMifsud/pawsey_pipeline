@@ -29,6 +29,7 @@ readTrimmomatic() {
     # In case the TruSeq3 adapters are not in path we will download them to the working directory
     # Check the file as sometimes it doesn't download properly and results in unknown trimmer error
     if [[ "$layout" == "single" ]]; then
+        singularity exec -e "$trimmomatic_image" cp /usr/local/bin/trinity-plugins/Trimmomatic/adapters/TruSeq3-SE.fa ./
         echo -e "MEGAHIT_SCRIPT: READ TRIMMOMATIC SINGLE - READ QC"
         # Quality control for single-end reads
         singularity exec -e "$trimmomatic_image" java -jar /usr/local/bin/trinity-plugins/Trimmomatic/trimmomatic-0.36.jar SE \
@@ -39,6 +40,7 @@ readTrimmomatic() {
     fi
     if [[ "$layout" == "paired" ]]; then
         # WILL NEED TO ADD IN THE PROPER ADAPTERS FOR NEXTERA AND CHECK IF YOU NEED TRUSEQ3-PE-2.fa
+        singularity exec -e "$trimmomatic_image" cp /usr/local/bin/trinity-plugins/Trimmomatic/adapters/TruSeq3-PE.fa ./
         echo -e "MEGAHIT_SCRIPT: READ TRIMMOMATIC PAIRED - READ QC"
         singularity exec -e "$trimmomatic_image" java -jar /usr/local/bin/trinity-plugins/Trimmomatic/trimmomatic-0.36.jar PE \
             -threads "$CPU" \
