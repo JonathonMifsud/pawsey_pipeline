@@ -20,7 +20,7 @@ user=jmif9945
 project="JCOM_pipeline_virome"
 root_project="jcomvirome"
 account="director2187"
-singularity_image="/scratch/$account/jmif9945/modules/kingfisher:0.3.0.sif"
+singularity_image="/scratch/$account/jmif9945/modules/kingfisher_pawsey/"
 
 while getopts "p:f:r:s:" 'OPTKEY'; do
     case "$OPTKEY" in
