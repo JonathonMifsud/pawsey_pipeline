@@ -43,13 +43,13 @@ library_run_without_path="$(basename -- $library_run)"
 library_id=$(echo $library_run_without_path | sed 's/\.contigs.fa//g')
 
 # variables change these to whatever you like!
-wd=/scratch/director2187/$user/"$root_project"/"$project"/blast_results
-inpath=/scratch/director2187/$user/"$root_project"/"$project"/contigs/final_contigs   # location of reads and filenames
-outpath=/scratch/director2187/$user/"$root_project"/"$project"/blast_results        # location of megahit output
-tempdir=/scratch/director2187/$user/"$root_project"/
+wd=/scratch/$account/$user/"$root_project"/"$project"/blast_results
+inpath=/scratch/$account/$user/"$root_project"/"$project"/contigs/final_contigs   # location of reads and filenames
+outpath=/scratch/$account/$user/"$root_project"/"$project"/blast_results        # location of megahit output
+tempdir=/scratch/$account/$user/"$root_project"/
 CPU=6
 MEM=2      
-db=/scratch/director2187/$user/VELAB/Databases/RdRp_db/RdRp-scan/RdRp-scan_0.90.dmnd
+db=/scratch/director2187/holmes_databases/Blast/RdRp-scan_0.90.dmnd
 
 # cd working dir
 cd "$wd" || exit
