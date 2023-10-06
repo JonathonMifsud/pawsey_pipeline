@@ -32,7 +32,8 @@ mkdir -p "${scratch_dir}"/abundance/final_abundance
 
 # Move regular files (not directories) from the current directory to the project's scripts directory
 echo "Moving files to the project's scripts directory..."
-find . -maxdepth 1 -type f -exec mv {} "${group_dir}/scripts" \;
+find ../adapters/ -maxdepth 1 -type f -exec cp {} "${group_dir}/adapters" \;
+find . -maxdepth 1 -type f -exec cp {} "${group_dir}/scripts" \;
 
 # Navigate to the project's scripts directory
 cd "${group_dir}/scripts"
