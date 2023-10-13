@@ -14,8 +14,8 @@
 
 #SBATCH --job-name="TrimMegaAbun"
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --mem=12G
+#SBATCH --ntasks-per-node=12
+#SBATCH --mem=120G
 #SBATCH --mail-user="$user@uni.sydney.edu.au"
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --partition=work
