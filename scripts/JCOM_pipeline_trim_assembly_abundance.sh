@@ -114,6 +114,6 @@ sbatch --array $jPhrase \
     --output "/scratch/$account/$user/$root_project/$project/logs/trim_assemble_abundance_%A_%a_$project_$(date '+%Y%m%d')_stout.txt" \
     --error="/scratch/$account/$user/$root_project/$project/logs/trim_assemble_abundance_%A_%a_$project_$(date '+%Y%m%d')_stderr.txt" \
     --export="trimmomatic_image=$trimmomatic_image,megahit_image=$megahit_image,rsem_image=$rsem_image,project=$project,file_of_accessions=$file_of_accessions,root_project=$root_project,singularity_image=$singularity_image,account=$account,user=$user" \
-    --time "00:10:00" \
+    --time "24:00:00" \
     --account="$account" \
     /scratch/$account/$user/"$root_project"/"$project"/scripts/JCOM_pipeline_trim_assembly_abundance.slurm
